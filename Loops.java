@@ -38,6 +38,12 @@ public class Loops {
 
 		System.out.println("Sum = " + sum2);
 
-	}
+	} int n = 5;
+int factorial = 1;
+for (int i = 1; i <= n; i++) {
+    factorial *= i;
+}
+System.out.println("Factorial = " + factorial);
+
 
 }
