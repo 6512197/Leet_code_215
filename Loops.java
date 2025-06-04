@@ -45,5 +45,13 @@ for (int i = 1; i <= n; i++) {
 }
 System.out.println("Factorial = " + factorial);
 
+import java.util.Scanner;
 
+Scanner scanner = new Scanner(System.in);
+int input;
+do {
+    System.out.print("Enter a number (0 to quit): ");
+    input = scanner.nextInt();
+    System.out.println("You entered: " + input);
+} while (input != 0);
 }
