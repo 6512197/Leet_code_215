@@ -46,7 +46,7 @@ for (int i = 1; i <= n; i++) {
 System.out.println("Factorial = " + factorial);
 
 import java.util.Scanner;
-
+// comment all the below 
 Scanner scanner = new Scanner(System.in);
 int input;
 do {
