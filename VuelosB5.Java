@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -88,4 +89,66 @@ En el tipo contenedor **VuelosB5** añada las siguientes operaciones e implemén
 				//Se ordenan primero por longitud y en empate por orden alfabético.
 				.collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))));
 	}
+	
+	/**
+	 * 5. Usa el método collect junto con la clase Collectors para los siguientes ejercicios que ya hemos resuelto de otra manera:
+
+	a. Dada una fecha, cuántos vuelos hay ese día.
+ 
+	b. Dado un mes como un entero devuelve el precio medio de los vuelos de ese mes.
+
+	c. Dado un año como un entero devuelve la recaudación de los vuelos de ese año.
+
+	d. Devuelve el Vuelo con mayor número de pasajeros.
+	 */
+	
+	
+	
+	
+	// 5. Usa el método collect junto con la clase Collectors para los siguientes ejercicios que ya hemos resuelto de otra manera:
+
+	//a. Dada una fecha, cuántos vuelos hay ese día.
+	
+	public Long getVuelporFecha (LocalDate fecha) {
+		return getVuelos().stream().filter(v->v.getFecha().equals(fecha)).collect(Collectors.counting());
+		
+	
+	}
+	
+	//b. Dado un mes como un entero devuelve el precio medio de los vuelos de ese mes.
+	public double  getPrecioMedioDeLosVuelos (Integer mes) {
+		return getVuelos().stream()
+		        .filter(v -> v.getFecha().getMonthValue() == mes)
+		        .map(Vuelo::getPrecio)   // ahora es Stream<Double>
+		        .mapToDouble(Double::doubleValue) // lo conviertes a DoubleStream
+		        .average()
+		        .orElse(0.0);	}
+	
+	
+	public double getPrecioMedioDevuelos2 (Integer mes) {
+		return getVuelos().stream().filter(v->v.getFecha().getMonthValue()== mes).collect(Collectors.averagingDouble(Vuelo::getPrecio));
+	}
+	
+	
+	//c. Dado un año como un entero devuelve la recaudación de los vuelos de ese año.
+	
+	public double getRecaudacionDeLosVuelos (Integer Anio) {
+		return getVuelos().stream().filter(v->v.getFecha().getYear()== Anio).collect(Collectors.summingDouble(v->v.getPrecio()*v.getNumPasajeros()));
+	}
+	
+	//	d. Devuelve el Vuelo con mayor número de pasajeros.
+
+	//compartor (.max .min .sort :,qxby :,inby PriorityQueue<Vuelo> pq = new PriorityQueue<>(Comparator.comparingInt(Vuelo::getNumPasajeros));
+//)
+	public Optional<Vuelo> getVueloMayorPasajeros() {
+	    return getVuelos().stream()
+	            .collect(Collectors.maxBy(Comparator.comparingInt(Vuelo::getNumPasajeros)));
+	}
+	
+	
+	
+	//7. Devuelve un Map que a cada fecha le haga corresponder una lista con sus vuelos.
+
+
+ 
 }
