@@ -170,6 +170,23 @@ En el tipo contenedor **VuelosB5** añada las siguientes operaciones e implemén
 		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getFecha, Collectors.counting()));
 	}
 
+//10. Devuelve un Map que a cada destino le haga corresponder el número total de plazas.
+//10. Map → destino → número total de plazas
+	
+	public Map <String,Integer> getNumTotalDePlazasPorElDestino (){
+		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getDestino, Collectors.summingInt(Vuelo::getNumPlazas)));
+	}
+	
+	
+	//11. Devuelve un Map que a cada destino le haga corresponder el precio medio de sus vuelos.
+	public Map <String,Double> getPrecioMedioPorDestino (){
+		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getDestino, Collectors.averagingDouble(Vuelo::getPrecio)));
+	}
+	
+	//12. Devuelve un Map que a cada destino le haga corresponder un conjunto con las fechas de los vuelos a ese destino
+	
+	public Map <String,Set<LocalDate>> getConjuntosConLasfechas(){
+		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getDestino, Collectors.mapping(Vuelo::getFecha,Collectors.toSet())));
+	}
 
- 
 }
