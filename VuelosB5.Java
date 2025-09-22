@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
@@ -148,6 +149,26 @@ En el tipo contenedor **VuelosB5** añada las siguientes operaciones e implemén
 	
 	
 	//7. Devuelve un Map que a cada fecha le haga corresponder una lista con sus vuelos.
+	
+	
+	public Map <LocalDate , List<Vuelo>> getListaVuelosPorFecha(){
+		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getFecha));
+	}
+	
+	
+	
+	//8. Devuelve un Map que a cada fecha le haga corresponder un conjunto con sus vuelos.
+	
+	public Map<LocalDate, Set<Vuelo>> getSetVuelosPorFecha() {
+	    return getVuelos().stream()
+	            .collect(Collectors.groupingBy(Vuelo::getFecha, Collectors.toSet()));
+	}
+
+	//9. Devuelve un Map que a cada fecha le haga corresponder el número de vuelos.
+
+	public Map<LocalDate, Long> getCadaFechaSurNumerodeVuelos(){
+		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getFecha, Collectors.counting()));
+	}
 
 
  
