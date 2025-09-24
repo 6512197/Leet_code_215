@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,13 +68,71 @@ Los resultados esperados para el dataset proporcionado son:
 	
 	//2.	Método que devuelve un Map tal que a cada destino le hace corresponder el vuelo más barato a ese destino.
 	
-	public Map <String, Vuelo> getVuelosMasBaratos (){
-		return getVuelos().stream().collect(Collectors.groupingBy(Vuelo::getDestino ,Collectors.collectingAndThen(
-                Collectors.minBy(Comparator.comparingDouble(Vuelo::getPrecio)),
-                //collectingAndThen unwraps the Optional<Vuelo> because we assume every destination has at least one flight.
-                Optional::get
-            )
-        ));
+	public Map<String, Vuelo> vueloMasBaratoPorDestino() {
+	    return getVuelos().stream()
+	        .collect(Collectors.groupingBy(
+	            Vuelo::getDestino,
+	            Collectors.collectingAndThen(
+	                Collectors.minBy(Comparator.comparingDouble(Vuelo::getPrecio)),
+	                Optional::get
+	            )
+	        ));
 	}
+		
+// 3.Método que devuelve un Map tal que a cada destino le hace corresponder el código del Vuelo con el vuelo más barato a ese destino.
+	
+	public Map<String, String> codigoVueloMasBaratoPorDestino() {
+	    return getVuelos().stream()
+	        .collect(Collectors.groupingBy(
+	            Vuelo::getDestino,
+	            Collectors.collectingAndThen(
+	                Collectors.minBy(Comparator.comparingDouble(Vuelo::getPrecio)),
+	                v -> v.get().getCodigo()
+	            )
+	        ));
+	    
+	    
+	}
+
+		
+
+	//4.	Método que devuelve el destino con más vuelos. Si no se puede calcular eleva NoSuchElementException.
+	
+	public String destinoConMasVuelos() {
+	    return getVuelos().stream()
+	        .collect(Collectors.groupingBy(Vuelo::getDestino, Collectors.counting()))
+	        .entrySet().stream()
+	        .max(Map.Entry.comparingByValue())
+	        .orElseThrow(NoSuchElementException::new)
+	        .getKey();
+	    
+	    /**
+	     * 
+Stream all flights → line them up.
+
+Group & count → how many flights per destination.
+
+Find the max → which destination has the most.
+
+Get the key → return the name
+	     */
+	}
+	
+	
+	//5.	Método que devuelve cuál es el segundo destino con más vuelos. Si no se puede calcular eleva NoSuchElementException.
+
+	public String SegundodestinoConMasVuelos() {
+	    return getVuelos().stream()
+	        .collect(Collectors.groupingBy(Vuelo::getDestino, Collectors.counting()))
+	        .entrySet().stream()
+	        .max(Map.Entry.comparingByValue())
+	        .orElseThrow(NoSuchElementException::new)
+	        .getKey([1]);
+	
+
+
+	
+	
+	
 
 }
